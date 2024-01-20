@@ -18,9 +18,7 @@ typedef struct Nodo_DL
     struct Nodo_DL *next;
 }Nodo_DL;
 
-// Operazioni binarie
-unsigned int Conta_OccorrenzeSL(Nodo_SL *root, int data);
-int Is_PresenteSL(Nodo_SL *root, int data);
-
-// Operazioni unarie
-int Is_ListaOrdinataSL(Nodo_SL *root);
+// Gestione liste
+Nodo_SL *CreaNodoSL(int data);
+Nodo_SL *InserisciInTesta(Nodo_SL *root, int data);
+Nodo_SL *InserisciInCoda(Nodo_SL *root, int data);
