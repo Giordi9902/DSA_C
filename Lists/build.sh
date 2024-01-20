@@ -6,7 +6,7 @@ gcc -c source/list.c -o object/list.o
 gcc -c source/main.c -o object/main.o
 
 # Link the object files to create the executable
-gcc object/main.o object/lists.o -o object/main
+gcc object/main.o object/list.o -o object/main
 
 echo "Compilation successful. Executable 'main' is in the 'object' folder."
 
