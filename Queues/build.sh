@@ -1,11 +1,11 @@
 # Compile tree.c and create object file
-gcc -c source/queue.c -o object/queue.o
+gcc -c source/queue.c -o bin/queue.o
 
 # Compile main.c and create object file
-gcc -c source/main.c -o object/main.o
+gcc -c source/main.c -o bin/main.o
 
 # Link the object files to create the executable
-gcc object/main.o object/queue.o -o object/main
+gcc bin/main.o bin/queue.o -o bin/main
 
-echo "Compilation successful. Executable 'main' is in the 'object' folder."
+echo "Compilation successful. Executable 'main' is in the 'bin' folder."
 

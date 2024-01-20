@@ -1,12 +1,12 @@
 #!/bin/bash
 # Compile tree.c and create object file
-gcc -c source/stack.c -o object/stack.o
+gcc -c source/stack.c -o bin/stack.o
 
 # Compile main.c and create object file
-gcc -c source/main.c -o object/main.o
+gcc -c source/main.c -o bin/main.o
 
 # Link the object files to create the executable
-gcc object/main.o object/stack.o -o object/main
+gcc bin/main.o bin/stack.o -o bin/main
 
-echo "Compilation successful. Executable 'main' is in the 'object' folder."
+echo "Compilation successful. Executable 'main' is in the 'bin' folder."
 
