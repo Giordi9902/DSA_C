@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"./Arrays/array.h"
+#include"./Lists/list.h"
 
 void print_int(const void*);
 void print_float(const void*);

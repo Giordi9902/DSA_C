@@ -10,7 +10,7 @@ STACK_DIR = Stack
 QUEUE_DIR = Queues
 
 # Source files
-SRCS = main.c $(ARRAY_DIR)/array.c #$(LIST_DIR)/list.c
+SRCS = main.c $(ARRAY_DIR)/array.c $(LIST_DIR)/list.c
 
 # Object files
 OBJS = $(SRCS:%.c=$(BIN_DIR)/%.o)
