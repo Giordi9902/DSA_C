@@ -43,3 +43,29 @@ Nodo_SL *InserisciInCoda(Nodo_SL *root, int data)
     }
     return root;
 }
+
+Nodo_SL *RicercaRicorsiva(Nodo_SL *root,int data)
+{
+    Nodo_SL* tmp = root;
+    if(tmp)
+    {
+        if(tmp->key == data)
+        {
+            return tmp;
+        }
+        else
+        {
+            return tmp = RicercaRicorsiva(tmp->next,data);
+        }
+    }
+}
+
+Nodo_SL * RicercaIterativa(Nodo_SL * root, int data)
+{
+    Nodo_SL * tmp = root;
+    while(tmp->next && tmp->key != data)
+    {
+        tmp = tmp->next;
+    }
+    return tmp;
+}

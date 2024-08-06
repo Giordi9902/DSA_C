@@ -22,3 +22,6 @@ typedef struct Nodo_DL
 Nodo_SL *CreaNodoSL(int data);
 Nodo_SL *InserisciInTesta(Nodo_SL *root, int data);
 Nodo_SL *InserisciInCoda(Nodo_SL *root, int data);
+Nodo_SL *RicercaRicorsiva(Nodo_SL * root,int data);
+
+#endif
