@@ -165,7 +165,7 @@ int SetAt(Array *array, size_t index, const void *element)
 }
 
 // Max finder
-const void * Max(const Array * array, CompareFunc cmp)
+const void *Max(const Array *array, CompareFunc cmp)
 {
     if (array == NULL || array->elements == NULL || array->length == 0 || cmp == NULL)
     {
@@ -187,7 +187,7 @@ const void * Max(const Array * array, CompareFunc cmp)
 }
 
 // Min finder
-const void * Min(const Array * array, CompareFunc cmp)
+const void *Min(const Array *array, CompareFunc cmp)
 {
     if (array == NULL || array->elements == NULL || array->length == 0 || cmp == NULL)
     {
@@ -209,19 +209,26 @@ const void * Min(const Array * array, CompareFunc cmp)
 }
 
 // Reverse array
-Array *Reverse(const Array * array)
+Array *Reverse(const Array *array)
 {
+    Array *reversed = CreateArray(array->capacity, array->element_size);
 
+    for (size_t index = array->length; index > 0; index--)
+    {
+        void *elem = (char *)array->elements + (index - 1) * array->element_size;
+        Add(reversed, elem);
+    }
+
+    return reversed;
 }
 
-// Sort
-void Sort(Array * array, CompareFunc cmp)
-{
 
-}
+// // Sort
+// void Sort(Array *array, CompareFunc cmp)
+// {
+// }
 
-// Binary research
-int BinaryResearch(const Array * array, const void * element)
-{
-
-}
+// // Binary research
+// int BinaryResearch(const Array *array, const void *element)
+// {
+// }

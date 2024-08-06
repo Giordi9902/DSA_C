@@ -12,12 +12,15 @@ int main()
     Array* int_array = CreateArray(5,sizeof(int));
     Display(int_array, print_int);
     int value_1 = 5;
+    int value_2 = 19;
+    int value_3 = 233;
     Add(int_array,&value_1);
-    int *a = (int*) GetAt(int_array,0);
-    printf("Extracted value : %d\n",*a);
+    Add(int_array,&value_2);
+    Add(int_array,&value_3);
     Display(int_array,print_int);
-    Delete(int_array,0);
-    Display(int_array,print_int);
+
+    Array * reversed = Reverse(int_array);
+    Display(reversed,print_int);
     FreeArray(int_array);
     return 0;
 }
