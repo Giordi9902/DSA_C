@@ -57,10 +57,7 @@ const void * Min(const Array*, CompareFunc);
 // Reverse array
 Array * Reverse(const Array *);
 
-// Sort
-void Sort(Array*,CompareFunc);
-
 // Binary research
-int BinaryResearch(const Array*,const void*);
+int BinaryResearch(const Array*,const void*, CompareFunc);
 
 #endif

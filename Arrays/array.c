@@ -222,13 +222,31 @@ Array *Reverse(const Array *array)
     return reversed;
 }
 
+int BinaryResearch(const Array *array, const void *element, CompareFunc cmp)
+{
+    int low = 0;
+    int high = array->length - 1;
 
-// // Sort
-// void Sort(Array *array, CompareFunc cmp)
-// {
-// }
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+        void *mid_elem = (char *)array->elements + mid * array->element_size;
 
-// // Binary research
-// int BinaryResearch(const Array *array, const void *element)
-// {
-// }
+        int result = cmp(element, mid_elem);
+
+        if (result == 0)
+        {
+            return mid;
+        }
+        else if (result < 0)
+        {
+            high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
+        }
+    }
+
+    return -1;
+}
