@@ -2,7 +2,6 @@ CC  = gcc
 CFLAGS = -Wall -Wextra -I./Array
 
 # Directories
-SRC_DIR = src
 BIN_DIR = bin
 ARRAY_DIR = Arrays
 LIST_DIR = Lists
@@ -11,13 +10,13 @@ STACK_DIR = Stack
 QUEUE_DIR = Queues
 
 # Source files
-SRCS = $(SRC_DIR)/main.c $(ARRAY_DIR)/array.c #$(LIST_DIR)/list.c
+SRCS = main.c $(ARRAY_DIR)/array.c #$(LIST_DIR)/list.c
 
 # Object files
 OBJS = $(SRCS:%.c=$(BIN_DIR)/%.o)
 
 # Executable name
-EXEC = $(BIN_DIR)/my_program
+EXEC = $(BIN_DIR)/main
 
 # Phony targets
 .PHONY: all clean

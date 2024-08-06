@@ -1,6 +1,6 @@
 #include "array.h"
 
-Array * CreateArray(size_t initial_capacity, size_t element_size)
+Array *CreateArray(size_t initial_capacity, size_t element_size)
 {
     Array *arr = malloc(sizeof(Array));
     if (arr == NULL)
@@ -15,7 +15,7 @@ Array * CreateArray(size_t initial_capacity, size_t element_size)
 
     arr->element_size = element_size;
     arr->capacity = initial_capacity;
-    arr->lenght = 0;
+    arr->length = 0;
 
     return arr;
 }
@@ -28,7 +28,7 @@ void FreeArray(Array *array)
         array->elements = NULL;
     }
     array->capacity = 0;
-    array->lenght = 0;
+    array->length = 0;
     array->element_size = 0;
 }
 
@@ -40,8 +40,8 @@ void Display(const Array *arr, PrintFunction print_elem)
         return;
     }
 
-    printf("Array (lenght: %zu, capacity: %zu):\n", arr->lenght, arr->capacity);
-    for (size_t index = 0; index < arr->lenght; index++)
+    printf("Array (length: %zu, capacity: %zu):\n", arr->length, arr->capacity);
+    for (size_t index = 0; index < arr->length; index++)
     {
         void *elem = (char *)arr->elements + index * arr->element_size;
         printf("[%zu]: ", index);
@@ -64,7 +64,7 @@ int Resize(Array *array, size_t new_capacity)
 
 int Add(Array *array, const void *element)
 {
-    if (array->lenght == array->capacity)
+    if (array->length == array->capacity)
     {
         size_t new_capacity = array->capacity == 0 ? 1 : array->capacity * 2;
         if (Resize(array, new_capacity) != 0)
@@ -73,16 +73,16 @@ int Add(Array *array, const void *element)
         }
     }
 
-    void *target = (char *)array->elements + (array->lenght * array->element_size);
+    void *target = (char *)array->elements + (array->length * array->element_size);
 
     memcpy(target, element, array->element_size);
-    array->lenght++;
+    array->length++;
     return 0;
 }
 
 int Delete(Array *array, size_t index)
 {
-    if (index >= array->lenght)
+    if (index >= array->length)
     {
         return -1;
     }
@@ -91,25 +91,28 @@ int Delete(Array *array, size_t index)
 
     void *next = (char *)target + array->element_size;
 
-    size_t num_bytes_to_move = (array->lenght - index - 1) * array->element_size;
+    size_t num_bytes_to_move = (array->length - index - 1) * array->element_size;
 
     if (num_bytes_to_move > 0)
     {
         memmove(target, next, num_bytes_to_move);
     }
 
-    array->lenght--;
+    array->length--;
 
     return 0;
 }
 
-int LinearSearch(Array* array, const void* element) {
+int LinearSearch(const Array *array, const void *element)
+{
     size_t index = 0;
 
-    while (index < array->lenght) {
+    while (index < array->length)
+    {
         void *elem = (char *)array->elements + index * array->element_size;
-        
-        if (memcmp(elem, element, array->element_size) == 0) {
+
+        if (memcmp(elem, element, array->element_size) == 0)
+        {
             return index;
         }
 
@@ -117,4 +120,108 @@ int LinearSearch(Array* array, const void* element) {
     }
 
     return -1;
+}
+
+void *GetAt(const Array *array, size_t index)
+{
+    void *elem = NULL;
+    if (index <= array->length)
+    {
+        elem = (char *)array->elements + index * array->element_size;
+    }
+    return elem;
+}
+
+const void *ConstGetAt(const Array *array, size_t index)
+{
+    return (const void *)GetAt(array, index);
+}
+
+int SetAt(Array *array, size_t index, const void *element)
+{
+
+    if (index > array->length)
+    {
+        return -1;
+    }
+
+    if (array->length == array->capacity)
+    {
+        size_t new_capacity = array->capacity == 0 ? 1 : array->capacity * 2;
+        if (Resize(array, new_capacity) != 0)
+        {
+            return -1;
+        }
+    }
+
+    void *target = (char *)array->elements + (index * array->element_size);
+    void *source = (char *)array->elements + (index + 1) * array->element_size;
+
+    memmove(source, target, (array->length - index) * array->element_size);
+    memcpy(target, element, array->element_size);
+    array->length++;
+
+    return 0;
+}
+
+// Max finder
+const void * Max(const Array * array, CompareFunc cmp)
+{
+    if (array == NULL || array->elements == NULL || array->length == 0 || cmp == NULL)
+    {
+        return NULL;
+    }
+
+    const void *max_elem = array->elements;
+
+    for (size_t index = 1; index < array->length; index++)
+    {
+        const void *current_elem = (const char *)array->elements + index * array->element_size;
+        if (cmp(current_elem, max_elem) > 0)
+        {
+            max_elem = current_elem;
+        }
+    }
+
+    return max_elem;
+}
+
+// Min finder
+const void * Min(const Array * array, CompareFunc cmp)
+{
+    if (array == NULL || array->elements == NULL || array->length == 0 || cmp == NULL)
+    {
+        return NULL;
+    }
+
+    const void *min_elem = array->elements;
+
+    for (size_t i = 1; i < array->length; i++)
+    {
+        const void *current_elem = (const char *)array->elements + i * array->element_size;
+        if (cmp(current_elem, min_elem) < 0)
+        {
+            min_elem = current_elem;
+        }
+    }
+
+    return min_elem;
+}
+
+// Reverse array
+Array *Reverse(const Array *)
+{
+
+}
+
+// Sort
+void Sort(Array *, CompareFunc)
+{
+
+}
+
+// Binary research
+int BinaryResearch(const Array *, const void *)
+{
+
 }

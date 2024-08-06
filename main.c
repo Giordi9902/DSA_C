@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include"../Arrays/array.h"
+#include"./Arrays/array.h"
 
 void print_int(const void*);
 void print_float(const void*);
@@ -13,6 +13,8 @@ int main()
     Display(int_array, print_int);
     int value_1 = 5;
     Add(int_array,&value_1);
+    int *a = (int*) GetAt(int_array,0);
+    printf("Extracted value : %d\n",*a);
     Display(int_array,print_int);
     Delete(int_array,0);
     Display(int_array,print_int);
