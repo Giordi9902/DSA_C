@@ -85,5 +85,5 @@ For any questions or inquiries, you can contact me:
 - **Name**: Giorgio Di Fusco
 - **Email**: giorgio99difusco@gmail.com
 
-Happy coding!
+Happy coding and learning!
 
