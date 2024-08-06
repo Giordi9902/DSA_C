@@ -1,70 +1,120 @@
 #include "array.h"
-#include <stdio.h>
-#include <stdlib.h>
-int *create_array(int n, int initial_value)
+
+Array * CreateArray(size_t initial_capacity, size_t element_size)
 {
-    int *array = malloc(n * sizeof(int));
-    for (int i = 0; i < n; i++)
+    Array *arr = malloc(sizeof(Array));
+    if (arr == NULL)
+        return NULL;
+
+    arr->elements = malloc(initial_capacity * element_size);
+    if (arr->elements == NULL)
     {
-        array[i] = initial_value;
+        free(arr);
+        return NULL;
     }
-    return array;
+
+    arr->element_size = element_size;
+    arr->capacity = initial_capacity;
+    arr->lenght = 0;
+
+    return arr;
 }
 
-int partition(int *array, int p, int r)
+void FreeArray(Array *array)
 {
-    int pivot = array[p];
-    int j = r + 1;
-    int i = p - 1;
-    do
+    if (array->elements != NULL)
     {
-        do
+        free(array->elements);
+        array->elements = NULL;
+    }
+    array->capacity = 0;
+    array->lenght = 0;
+    array->element_size = 0;
+}
+
+void Display(const Array *arr, PrintFunction print_elem)
+{
+    if (arr == NULL || arr->elements == NULL)
+    {
+        printf("Array is NULL or empty\n");
+        return;
+    }
+
+    printf("Array (lenght: %zu, capacity: %zu):\n", arr->lenght, arr->capacity);
+    for (size_t index = 0; index < arr->lenght; index++)
+    {
+        void *elem = (char *)arr->elements + index * arr->element_size;
+        printf("[%zu]: ", index);
+        print_elem(elem);
+        printf("\n");
+    }
+}
+
+int Resize(Array *array, size_t new_capacity)
+{
+    void *new_elements = realloc(array->elements, new_capacity * array->element_size);
+    if (!new_elements)
+    {
+        return -1;
+    }
+    array->elements = new_elements;
+    array->capacity = new_capacity;
+    return 0;
+}
+
+int Add(Array *array, const void *element)
+{
+    if (array->lenght == array->capacity)
+    {
+        size_t new_capacity = array->capacity == 0 ? 1 : array->capacity * 2;
+        if (Resize(array, new_capacity) != 0)
         {
-            j--;
-        } while ((array[j] > pivot));
-        do
-        {
-            i++;
-        } while ((array[i] < pivot));
-        if (i < j)
-        {
-            int temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
+            return -1;
         }
-    } while (i < j);
-    return j;
-}
-
-int *quicksort(int *array, int p, int r)
-{
-    if (p < r)
-    {
-        int q = partition(array, p, r);
-        quicksort(array, p, q);
-        quicksort(array, q + 1, r);
     }
-    return array;
+
+    void *target = (char *)array->elements + (array->lenght * array->element_size);
+
+    memcpy(target, element, array->element_size);
+    array->lenght++;
+    return 0;
 }
 
-void print_array(int *array, int n)
+int Delete(Array *array, size_t index)
 {
-    for (int i = 0; i < n; i++)
+    if (index >= array->lenght)
     {
-        printf("%d ", array[i]);
+        return -1;
     }
+
+    void *target = (char *)array->elements + (index * array->element_size);
+
+    void *next = (char *)target + array->element_size;
+
+    size_t num_bytes_to_move = (array->lenght - index - 1) * array->element_size;
+
+    if (num_bytes_to_move > 0)
+    {
+        memmove(target, next, num_bytes_to_move);
+    }
+
+    array->lenght--;
+
+    return 0;
 }
 
-int check_sorted(int *array, int n)
-{
-    int sorted = 1;
-    for (int i = 0; i < n - 1; i++)
-    {
-        if (array[i] > array[i + 1])
-        {
-            sorted = 0;
-            break;
+int LinearSearch(Array* array, const void* element) {
+    size_t index = 0;
+
+    while (index < array->lenght) {
+        void *elem = (char *)array->elements + index * array->element_size;
+        
+        if (memcmp(elem, element, array->element_size) == 0) {
+            return index;
         }
+
+        index++;
     }
-    return sorted;
+
+    return -1;
 }
