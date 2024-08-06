@@ -209,19 +209,19 @@ const void * Min(const Array * array, CompareFunc cmp)
 }
 
 // Reverse array
-Array *Reverse(const Array *)
+Array *Reverse(const Array * array)
 {
 
 }
 
 // Sort
-void Sort(Array *, CompareFunc)
+void Sort(Array * array, CompareFunc cmp)
 {
 
 }
 
 // Binary research
-int BinaryResearch(const Array *, const void *)
+int BinaryResearch(const Array * array, const void * element)
 {
 
 }
