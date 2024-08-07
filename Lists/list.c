@@ -31,7 +31,7 @@
 /* $$$$$$$$\ $$ |$$$$$$$  |  \$$$$  |$$$$$$$  |           */
 /* \________|\__|\_______/    \____/ \_______/            */
 
-Node_SL *Create_Node_SL(int data)
+Node_SL *New_Node_SL(int data)
 {
     Node_SL *tmp;
     tmp = malloc(sizeof(Node_SL));
@@ -54,47 +54,52 @@ void Display_SL(Node_SL *head)
     printf("\n");
 }
 
-Node_SL *Revert_SL(Node_SL *Lista1)
+int Empty_SL(Node_SL* head)
 {
-    Node_SL *tmp = Lista1;
-    Node_SL *Lista2 = NULL;
-    while (tmp)
-    {
-        Lista2 = Insert_AtFront_SL(Lista2, tmp->key);
-        tmp = tmp->next;
-    }
-    return Lista2;
+    return (head == NULL);
 }
 
-unsigned int Conta_OccorrenzeSL(Node_SL *head, int dato)
-{
-    Node_SL *tmp = head;
-    unsigned int cont = 1;
-    while (tmp->next)
-    {
-        if ((tmp->key) == dato)
-        {
-            cont++;
-        }
-        tmp = tmp->next;
-    }
-    return cont;
-}
+// Node_SL *Revert_SL(Node_SL *Lista1)
+// {
+//     Node_SL *tmp = Lista1;
+//     Node_SL *Lista2 = NULL;
+//     while (tmp)
+//     {
+//         Lista2 = Insert_AtFront_SL(Lista2, tmp->key);
+//         tmp = tmp->next;
+//     }
+//     return Lista2;
+// }
 
-void Cerca_UltimoSL(Node_SL *head)
-{
-    Node_SL *p = head;
-    while (p->next)
-    {
-        p = p->next;
-    }
-    printf("L'ultimo elemento della lista è: %d\n", p->key);
-}
+// unsigned int Conta_OccorrenzeSL(Node_SL *head, int dato)
+// {
+//     Node_SL *tmp = head;
+//     unsigned int cont = 1;
+//     while (tmp->next)
+//     {
+//         if ((tmp->key) == dato)
+//         {
+//             cont++;
+//         }
+//         tmp = tmp->next;
+//     }
+//     return cont;
+// }
+
+// void Cerca_UltimoSL(Node_SL *head)
+// {
+//     Node_SL *p = head;
+//     while (p->next)
+//     {
+//         p = p->next;
+//     }
+//     printf("L'ultimo elemento della lista è: %d\n", p->key);
+// }
 
 Node_SL *Insert_AtFront_SL(Node_SL *head, int data)
 {
     Node_SL *tmp = NULL;
-    tmp = Create_Node_SL(data);
+    tmp = New_Node_SL(data);
     if (tmp != NULL)
     {
         tmp->next = head;
@@ -113,7 +118,7 @@ Node_SL *Insert_AtBack_SL(Node_SL *head, int data)
     }
     else
     {
-        temp = Create_Node_SL(data);
+        temp = New_Node_SL(data);
         while (prec->next)
         {
             prec = prec->next;
@@ -123,7 +128,7 @@ Node_SL *Insert_AtBack_SL(Node_SL *head, int data)
     return head;
 }
 
-Node_SL *Cerca_PredecessoreSL(Node_SL *head, int data)
+Node_SL *Find_Predecessor_SL(Node_SL *head, int data)
 {
     Node_SL *q = head;
     Node_SL *p = head;
@@ -135,6 +140,7 @@ Node_SL *Cerca_PredecessoreSL(Node_SL *head, int data)
     }
     return p;
 }
+
 Node_SL *Insert_InOrder_SL(Node_SL *head, int data)
 {
     Node_SL *temp = NULL;
@@ -144,8 +150,8 @@ Node_SL *Insert_InOrder_SL(Node_SL *head, int data)
         head = Insert_AtFront_SL(head, data);
     else
     {
-        prec = Cerca_PredecessoreSL(head, data);
-        temp = Create_Node_SL(data);
+        prec = Find_Predecessor_SL(head, data);
+        temp = New_Node_SL(data);
         succ = prec->next;
         temp->next = succ;
         prec->next = temp;
@@ -153,56 +159,74 @@ Node_SL *Insert_InOrder_SL(Node_SL *head, int data)
     return head;
 }
 
-int Is_Sorted_SL(Node_SL *head)
+// int Is_Sorted_SL(Node_SL *head)
+// {
+//     int ordinata = 1;
+//     Node_SL *tmp = head;
+//     if (!head)
+//         ordinata = 1;
+//     else
+//     {
+//         while (tmp->next && ordinata == 1)
+//         {
+//             if (tmp->key > tmp->next->key)
+//             {
+//                 ordinata = 0;
+//             }
+//             tmp = tmp->next;
+//         }
+//     }
+//     return ordinata;
+// }
+
+Node_SL *Find_Iterative_SL(Node_SL *head, int data)
 {
-    int ordinata = 1;
-    Node_SL *tmp = head;
-    if (!head)
-        ordinata = 1;
-    else
+    Node_SL *tmp =  NULL;
+    if(head)
     {
-        while (tmp->next && ordinata == 1)
+        tmp = head;
+        while (tmp->next && !(tmp->key == data))
         {
-            if (tmp->key > tmp->next->key)
-            {
-                ordinata = 0;
-            }
             tmp = tmp->next;
         }
     }
-    return ordinata;
+    return tmp;
 }
 
-Node_SL *Cerca_ElementoSL(Node_SL *head, int data)
+Node_SL* Find_Recursive_SL(Node_SL * head, int data)
 {
-    Node_SL *q = head;
-    while (q != NULL && (q->key != data))
+    Node_SL* tmp = NULL;
+    if(head)
     {
-        q = q->next;
+        tmp  = head;
+        if(!(tmp->key == data))
+        {
+            tmp = Find_Recursive_SL(tmp->next,data);
+        }
     }
-    return q;
+    return tmp;
 }
 
 int Exists_SL(Node_SL *head, int data)
 {
-    return (Cerca_ElementoSL(head, data) != NULL);
+    return (Find_Iterative_SL(head, data) != NULL);
 }
 
 Node_SL *Insert_AfterNode_SL(Node_SL *head, int predecessore, int data)
 {
     Node_SL *temp = NULL;
     Node_SL *nuovo = NULL;
-    temp = Cerca_ElementoSL(head, predecessore);
+    temp = Find_Iterative_SL(head, predecessore);
     if (temp)
     {
-        nuovo = Create_Node_SL(data);
+        nuovo = New_Node_SL(data);
         nuovo->next = temp->next;
         temp->next = nuovo;
     }
     return head;
 }
 
-Node_SL *Libera_ListaSL(Node_SL *head)
+Node_SL *Free_SL(Node_SL *head)
 {
     Node_SL *temp = head;
     while (head)
@@ -237,173 +261,173 @@ Node_SL *Remove_Node_SL(Node_SL *head, int data)
     return head;
 }
 
-unsigned int Somma_listaSL(Node_SL *head)
-{
-    Node_SL *temp = head;
-    unsigned int somma = 0;
-    while (temp != NULL)
-    {
-        somma = somma + temp->key;
-        temp = temp->next;
-    }
-    return somma;
-}
+// unsigned int Somma_listaSL(Node_SL *head)
+// {
+//     Node_SL *temp = head;
+//     unsigned int somma = 0;
+//     while (temp != NULL)
+//     {
+//         somma = somma + temp->key;
+//         temp = temp->next;
+//     }
+//     return somma;
+// }
 
-unsigned int Prodotto_listaSL(Node_SL *head)
-{
-    Node_SL *temp = head;
-    unsigned int prodotto = 1;
-    while (temp != NULL)
-    {
-        prodotto = prodotto * temp->key;
-        temp = temp->next;
-    }
-    return prodotto;
-}
+// unsigned int Prodotto_listaSL(Node_SL *head)
+// {
+//     Node_SL *temp = head;
+//     unsigned int prodotto = 1;
+//     while (temp != NULL)
+//     {
+//         prodotto = prodotto * temp->key;
+//         temp = temp->next;
+//     }
+//     return prodotto;
+// }
 
-float Media_listaSL(Node_SL *head)
-{
-    Node_SL *temp = head;
-    unsigned int cont = 0;
-    float media = 0;
-    float somma = 0;
-    while (temp != NULL)
-    {
-        cont++;
-        somma = somma + temp->key;
-        temp = temp->next;
-    }
-    if (cont > 0)
-    {
-        media = somma / cont;
-    }
-    return media;
-}
+// float Media_listaSL(Node_SL *head)
+// {
+//     Node_SL *temp = head;
+//     unsigned int cont = 0;
+//     float media = 0;
+//     float somma = 0;
+//     while (temp != NULL)
+//     {
+//         cont++;
+//         somma = somma + temp->key;
+//         temp = temp->next;
+//     }
+//     if (cont > 0)
+//     {
+//         media = somma / cont;
+//     }
+//     return media;
+// }
 
-unsigned int Length_SL(Node_SL *head)
-{
-    Node_SL *temp = head;
-    unsigned int cont = 0;
-    while (temp != NULL)
-    {
-        cont++;
-        temp = temp->next;
-    }
-    return cont;
-}
+// unsigned int Length_SL(Node_SL *head)
+// {
+//     Node_SL *temp = head;
+//     unsigned int cont = 0;
+//     while (temp != NULL)
+//     {
+//         cont++;
+//         temp = temp->next;
+//     }
+//     return cont;
+// }
 
-unsigned int Norma_listaSL(Node_SL *head)
-{
-    Node_SL *temp = head;
-    unsigned int norma = 0;
-    unsigned int somma = 0;
-    while (temp != NULL)
-    {
-        somma = somma + (temp->key) * (temp->key);
-        temp = temp->next;
-    }
-    norma = sqrt(somma);
-    return norma;
-}
+// unsigned int Norma_listaSL(Node_SL *head)
+// {
+//     Node_SL *temp = head;
+//     unsigned int norma = 0;
+//     unsigned int somma = 0;
+//     while (temp != NULL)
+//     {
+//         somma = somma + (temp->key) * (temp->key);
+//         temp = temp->next;
+//     }
+//     norma = sqrt(somma);
+//     return norma;
+// }
 
-unsigned int TrovaMinSL(Node_SL *head)
-{
-    Node_SL *temp = head;
-    unsigned int min = temp->key;
-    while (temp != NULL)
-    {
-        if (temp->key <= min)
-        {
-            min = temp->key;
-        }
-        temp = temp->next;
-    }
-    return min;
-}
+// unsigned int TrovaMinSL(Node_SL *head)
+// {
+//     Node_SL *temp = head;
+//     unsigned int min = temp->key;
+//     while (temp != NULL)
+//     {
+//         if (temp->key <= min)
+//         {
+//             min = temp->key;
+//         }
+//         temp = temp->next;
+//     }
+//     return min;
+// }
 
-unsigned int TrovaMaxSL(Node_SL *head)
-{
-    Node_SL *temp = head;
-    unsigned int max = temp->key;
-    while (temp != NULL)
-    {
-        if (temp->key >= max)
-        {
-            max = temp->key;
-        }
-        temp = temp->next;
-    }
-    return max;
-}
+// unsigned int TrovaMaxSL(Node_SL *head)
+// {
+//     Node_SL *temp = head;
+//     unsigned int max = temp->key;
+//     while (temp != NULL)
+//     {
+//         if (temp->key >= max)
+//         {
+//             max = temp->key;
+//         }
+//         temp = temp->next;
+//     }
+//     return max;
+// }
 
-Node_SL *Unione_SL(Node_SL *Lista1, Node_SL *Lista2)
-{
-    Node_SL *tmp = Lista2;
-    Node_SL *search = NULL;
-    while (tmp)
-    {
-        search = Cerca_ElementoSL(Lista1, tmp->key);
-        if (!search)
-        {
-            Lista1 = Insert_AtBack_SL(Lista1, tmp->key);
-        }
-        tmp = tmp->next;
-    }
-    return Lista1;
-}
+// Node_SL *Unione_SL(Node_SL *Lista1, Node_SL *Lista2)
+// {
+//     Node_SL *tmp = Lista2;
+//     Node_SL *search = NULL;
+//     while (tmp)
+//     {
+//         search = Find_Iterative_SL(Lista1, tmp->key);
+//         if (!search)
+//         {
+//             Lista1 = Insert_AtBack_SL(Lista1, tmp->key);
+//         }
+//         tmp = tmp->next;
+//     }
+//     return Lista1;
+// }
 
-Node_SL *Complemento_SL(Node_SL *Lista1, Node_SL *Lista2)
-{
-    Node_SL *tmp = Lista1;
-    Node_SL *search = NULL;
-    while (tmp)
-    {
-        search = Cerca_ElementoSL(Lista2, tmp->key);
-        if (search)
-        {
-            Lista1 = Remove_Node_SL(Lista1, tmp->key);
-        }
-        tmp = tmp->next;
-    }
-    return Lista1;
-}
+// Node_SL *Complemento_SL(Node_SL *Lista1, Node_SL *Lista2)
+// {
+//     Node_SL *tmp = Lista1;
+//     Node_SL *search = NULL;
+//     while (tmp)
+//     {
+//         search = Find_Iterative_SL(Lista2, tmp->key);
+//         if (search)
+//         {
+//             Lista1 = Remove_Node_SL(Lista1, tmp->key);
+//         }
+//         tmp = tmp->next;
+//     }
+//     return Lista1;
+// }
 
-Node_SL *Duplicate_SL(Node_SL *Lista1, Node_SL *Lista2)
-{
-    Node_SL *tmp = Lista1;
-    while (tmp)
-    {
-        Lista2 = Insert_AtBack_SL(Lista2, tmp->key);
-        tmp = tmp->next;
-    }
-    return Lista2;
-}
+// Node_SL *Duplicate_SL(Node_SL *Lista1, Node_SL *Lista2)
+// {
+//     Node_SL *tmp = Lista1;
+//     while (tmp)
+//     {
+//         Lista2 = Insert_AtBack_SL(Lista2, tmp->key);
+//         tmp = tmp->next;
+//     }
+//     return Lista2;
+// }
 
-Node_SL *Merge_SL(Node_SL *Lista1, Node_SL *Lista2)
-{
-    Node_SL *tmp = Lista2;
-    while (tmp)
-    {
-        Lista1 = Insert_AtBack_SL(Lista1, tmp->key);
-        tmp = tmp->next;
-    }
-    return Lista1;
-}
+// Node_SL *Merge_SL(Node_SL *Lista1, Node_SL *Lista2)
+// {
+//     Node_SL *tmp = Lista2;
+//     while (tmp)
+//     {
+//         Lista1 = Insert_AtBack_SL(Lista1, tmp->key);
+//         tmp = tmp->next;
+//     }
+//     return Lista1;
+// }
 
-Node_SL *Sort_SL(Node_SL *head)
-{
-    Node_SL *tmp = head;
-    Node_SL *list_tmp = NULL;
-    if (head)
-    {
-        while (tmp)
-        {
-            list_tmp = Insert_InOrder_SL(list_tmp, tmp->key);
-            tmp = tmp->next;
-        }
-    }
-    return list_tmp;
-}
+// Node_SL *Sort_SL(Node_SL *head)
+// {
+//     Node_SL *tmp = head;
+//     Node_SL *list_tmp = NULL;
+//     if (head)
+//     {
+//         while (tmp)
+//         {
+//             list_tmp = Insert_InOrder_SL(list_tmp, tmp->key);
+//             tmp = tmp->next;
+//         }
+//     }
+//     return list_tmp;
+// }
 
 /* $$$$$$$\                      $$\       $$\            */
 /* $$  __$$\                     $$ |      $$ |           */
@@ -436,39 +460,39 @@ Node_SL *Sort_SL(Node_SL *head)
 /* $$$$$$$$\ $$ |$$$$$$$  |  \$$$$  |$$$$$$$  |           */
 /* \________|\__|\_______/    \____/ \_______/            */
 
-unsigned int Conta_OccorrenzeDL(Node_DL *head, int dato)
-{
-    Node_DL *tmp = head;
-    unsigned int cont = 1;
-    while (tmp->next)
-    {
-        if ((tmp->key) == dato)
-        {
-            cont++;
-        }
-        tmp = tmp->next;
-    }
-    return cont;
-}
+// unsigned int Conta_OccorrenzeDL(Node_DL *head, int dato)
+// {
+//     Node_DL *tmp = head;
+//     unsigned int cont = 1;
+//     while (tmp->next)
+//     {
+//         if ((tmp->key) == dato)
+//         {
+//             cont++;
+//         }
+//         tmp = tmp->next;
+//     }
+//     return cont;
+// }
 
-void Stampa_InversaDL(Node_DL *head)
-{
-    Node_DL *tmp = head;
-    // Scorro la lista per arrivare all'ultimo nodo
-    while (tmp->next)
-    {
-        tmp = tmp->next;
-    }
-    // A partire dall'ultimo inizio a stampare i valori della lista e vado indietro
-    while (tmp)
-    {
-        printf("%d\t", tmp->key);
-        tmp = tmp->prev;
-    }
-    printf("\n");
-}
+// void Stampa_InversaDL(Node_DL *head)
+// {
+//     Node_DL *tmp = head;
+//     // Scorro la lista per arrivare all'ultimo nodo
+//     while (tmp->next)
+//     {
+//         tmp = tmp->next;
+//     }
+//     // A partire dall'ultimo inizio a stampare i valori della lista e vado indietro
+//     while (tmp)
+//     {
+//         printf("%d\t", tmp->key);
+//         tmp = tmp->prev;
+//     }
+//     printf("\n");
+// }
 
-int Is_PresenteDL(Node_DL *head, int dato)
+int Exists_DL(Node_DL *head, int dato)
 {
     Node_DL *tmp = head;
     int trovato = 0;
@@ -483,71 +507,83 @@ int Is_PresenteDL(Node_DL *head, int dato)
     return trovato;
 }
 
-int Trova_MaxDL(Node_DL *head)
+Node_DL *Free_DL(Node_DL * head)
 {
-    Node_DL *tmp = head;
-    int max = tmp->key;
-    while (tmp)
+    Node_DL *temp = head;
+    while (head)
     {
-        if (tmp->key >= max)
-        {
-            max = tmp->key;
-        }
-        tmp = tmp->next;
+        temp = head;
+        head = temp->next;
+        free(temp);
     }
-    return max;
+    return head;
 }
 
-int Trova_MinDL(Node_DL *head)
-{
-    Node_DL *tmp = head;
-    int min = tmp->key;
-    while (tmp)
-    {
-        if (tmp->key <= min)
-        {
-            min = tmp->key;
-        }
-        tmp = tmp->next;
-    }
-    return min;
-}
+// int Trova_MaxDL(Node_DL *head)
+// {
+//     Node_DL *tmp = head;
+//     int max = tmp->key;
+//     while (tmp)
+//     {
+//         if (tmp->key >= max)
+//         {
+//             max = tmp->key;
+//         }
+//         tmp = tmp->next;
+//     }
+//     return max;
+// }
 
-float Media_listaDL(Node_DL *head)
-{
-    return (Somma_listaDL(head) / Lenght_DL(head));
-}
+// int Trova_MinDL(Node_DL *head)
+// {
+//     Node_DL *tmp = head;
+//     int min = tmp->key;
+//     while (tmp)
+//     {
+//         if (tmp->key <= min)
+//         {
+//             min = tmp->key;
+//         }
+//         tmp = tmp->next;
+//     }
+//     return min;
+// }
 
-unsigned int Somma_listaDL(Node_DL *head)
-{
-    Node_DL *tmp = head;
-    unsigned int Somma = 0;
-    while (tmp)
-    {
-        Somma = Somma + tmp->key;
-        tmp = tmp->next;
-    }
-    return Somma;
-}
+// float Media_listaDL(Node_DL *head)
+// {
+//     return (Somma_listaDL(head) / Lenght_DL(head));
+// }
 
-unsigned int Lenght_DL(Node_DL *head)
-{
-    Node_DL *tmp = head;
-    unsigned int cont = 0;
-    while (tmp)
-    {
-        cont++;
-        tmp = tmp->next;
-    }
-    return cont;
-}
+// unsigned int Somma_listaDL(Node_DL *head)
+// {
+//     Node_DL *tmp = head;
+//     unsigned int Somma = 0;
+//     while (tmp)
+//     {
+//         Somma = Somma + tmp->key;
+//         tmp = tmp->next;
+//     }
+//     return Somma;
+// }
 
-int Is_EmptyDL(Node_DL *head)
+// unsigned int Lenght_DL(Node_DL *head)
+// {
+//     Node_DL *tmp = head;
+//     unsigned int cont = 0;
+//     while (tmp)
+//     {
+//         cont++;
+//         tmp = tmp->next;
+//     }
+//     return cont;
+// }
+
+int Empty_DL(Node_DL *head)
 {
     return (head == NULL);
 }
 
-Node_DL *Create_Node_DL(int data)
+Node_DL *New_Node_DL(int data)
 {
     Node_DL *tmp = malloc(sizeof(Node_DL));
     if (tmp)
@@ -559,12 +595,12 @@ Node_DL *Create_Node_DL(int data)
     return tmp;
 }
 
-Node_DL *InsertAtFront_DL(Node_DL *head, int data)
+Node_DL *Insert_AtFront_DL(Node_DL *head, int data)
 {
     Node_DL *tmp = NULL;
     if (head == NULL)
     {
-        tmp = Create_Node_DL(data);
+        tmp = New_Node_DL(data);
         if (tmp)
         {
             head = tmp;
@@ -572,7 +608,7 @@ Node_DL *InsertAtFront_DL(Node_DL *head, int data)
     }
     else
     {
-        tmp = Create_Node_DL(data);
+        tmp = New_Node_DL(data);
         if (tmp)
         {
             tmp->next = head;
@@ -583,18 +619,18 @@ Node_DL *InsertAtFront_DL(Node_DL *head, int data)
     return head;
 }
 
-Node_DL *InsertAtBack_DL(Node_DL *head, int data)
+Node_DL *Insert_AtBack_DL(Node_DL *head, int data)
 {
     Node_DL *tmp = NULL;
     Node_DL *q = head;
     Node_DL *p;
     if (!head)
     {
-        head = InsertAtFront_DL(head, data);
+        head = Insert_AtFront_DL(head, data);
     }
     else
     {
-        tmp = Create_Node_DL(data);
+        tmp = New_Node_DL(data);
         while (q->next)
         {
             q = q->next;
@@ -604,7 +640,7 @@ Node_DL *InsertAtBack_DL(Node_DL *head, int data)
     }
     return head;
 }
-void Stampa_ListaDL(Node_DL *head)
+void Display_DL(Node_DL *head)
 {
     Node_DL *tmp = head;
     int i = 0;
@@ -635,7 +671,7 @@ Node_DL *Insert_AfterNode_DL(Node_DL *head, int predecessore, int data)
         tmp = Linear_Search_DL(head, predecessore);
         if (tmp)
         {
-            new = Create_Node_DL(data);
+            new = New_Node_DL(data);
             new->next = tmp->next;
             new->prev = tmp;
             tmp->next = new;
@@ -648,34 +684,34 @@ Node_DL *Insert_AfterNode_DL(Node_DL *head, int predecessore, int data)
     return head;
 }
 
-int Is_ListaDLOrdinata(Node_DL *head)
-{
-    int ordinata = 1;
-    Node_DL *tmp = head;
-    if (!head)
-    {
-        ordinata = 1;
-    }
-    else
-    {
-        while (tmp->next && ordinata == 1)
-        {
-            if (tmp->key > tmp->next->key)
-            {
-                ordinata = 0;
-            }
-            tmp = tmp->next;
-        }
-    }
-    return ordinata;
-}
+// int Is_ListaDLOrdinata(Node_DL *head)
+// {
+//     int ordinata = 1;
+//     Node_DL *tmp = head;
+//     if (!head)
+//     {
+//         ordinata = 1;
+//     }
+//     else
+//     {
+//         while (tmp->next && ordinata == 1)
+//         {
+//             if (tmp->key > tmp->next->key)
+//             {
+//                 ordinata = 0;
+//             }
+//             tmp = tmp->next;
+//         }
+//     }
+//     return ordinata;
+// }
 
 Node_DL *Insert_InOrder_DL(Node_DL *head, int data)
 {
     Node_DL *new = NULL;
     if (!head)
     {
-        head = InsertAtFront_DL(head, data);
+        head = Insert_AtFront_DL(head, data);
     }
     else
     {
@@ -684,7 +720,7 @@ Node_DL *Insert_InOrder_DL(Node_DL *head, int data)
         {
             tmp = tmp->next;
         }
-        new = Create_Node_DL(data);
+        new = New_Node_DL(data);
         new->next = tmp->next;
         new->prev = tmp;
         tmp->next = new;

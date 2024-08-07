@@ -1,16 +1,19 @@
 CC  = gcc
-CFLAGS = -Wall -Wextra -I./Array
+CFLAGS = -Wall -Wextra -I./Array -I./Lists -I./Test/Array -I./Test/List -I./Test
 
 # Directories
 BIN_DIR = bin
 ARRAY_DIR = Arrays
+TEST_DIR = Test
+ARR_TEST_DIR = Test/Array
+LST_TEST_DIR = Test/List
 LIST_DIR = Lists
 TREE_DIR = Trees
 STACK_DIR = Stack
 QUEUE_DIR = Queues
 
 # Source files
-SRCS = main.c $(ARRAY_DIR)/array.c $(LIST_DIR)/list.c
+SRCS = main.c $(ARRAY_DIR)/array.c $(LIST_DIR)/list.c $(ARR_TEST_DIR)/array.c $(LST_TEST_DIR)/list.c $(TEST_DIR)/test.c
 
 # Object files
 OBJS = $(SRCS:%.c=$(BIN_DIR)/%.o)
